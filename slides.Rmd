@@ -6,7 +6,7 @@ output:
   beamer_presentation:
     fig_caption: false
     includes:
-      in_header: header.tex
+      in_header: scripts/header.tex
 classoption: "aspectratio=169"
 always_allow_html: yes
 ---
