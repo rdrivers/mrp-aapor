@@ -13,7 +13,7 @@ always_allow_html: yes
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(root.dir = '../' )
+knitr::opts_knit$set(root.dir = '../')
 options(width=85)
 ```
 
@@ -53,7 +53,7 @@ install.packages(c("tidyverse", "lme4", "survey", "arm", "maps", "mapproj",
 
 ## What is MRP?
 
-![](images/mrp-stan-tweet.png)
+![](../../images/mrp-stan-tweet.png)
 
 \centering
 \LARGE
@@ -72,7 +72,7 @@ Informally, **Mr. P**
 \columnsbegin
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/gelman.jpeg")
+knitr::include_graphics("../images/gelman.jpeg")
 ```
 
 \smallskip
@@ -101,7 +101,7 @@ Ideas (post-stratification, multilevel models, hierarchical Bayesian estimation)
 \columnsbegin
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/ulam.jpeg")
+knitr::include_graphics("../images/ulam.jpeg")
 ```
 
 \medskip
@@ -120,7 +120,7 @@ Stan is an open source software project developing *Markov chain Monte Carlo* (M
 
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/stan_logo.png")
+knitr::include_graphics("../images/stan_logo.png")
 ```
 
 \smallskip
@@ -142,7 +142,7 @@ knitr::include_graphics("images/stan_logo.png")
 
 ## Selection bias: the Xbox panel
 
-![](images/poll_screenshot.jpg)
+![](../images/poll_screenshot.jpg)
 
 * 750,148 interviews with 345,858 Xbox users during the 2012 election campaign
 * However, the sample had some problems....
@@ -154,7 +154,7 @@ knitr::include_graphics("images/stan_logo.png")
 
 \centering
 
-![](images/demo_xbox_v_exit.pdf){height=75%}
+![](../images/demo_xbox_v_exit.pdf){height=75%}
 
 \centering
 
@@ -166,7 +166,7 @@ knitr::include_graphics("images/stan_logo.png")
 
 \centering
 
-![](images/subgroup_predictions.pdf){height=60%}
+![](../images/subgroup_predictions.pdf){height=60%}
 
 75,096 cells: 2 gender x 4 race x 4 age x 4 education x 4 party x 3 ideology x 50 states 
 
@@ -184,14 +184,14 @@ Under some circumstances, **big data** (large sample sizes) and **modelling** ca
 
 \centering
 
-![](images/uk17_predictions.png)
+![](../images/uk17_predictions.png)
 
 
 ## Comparison of MRP forecasts and outcomes
 
 \centering
 
-![](images/uk17_yg_est.png)
+![](../images/uk17_yg_est.png)
 
 
 ## Lesson 2
@@ -206,13 +206,13 @@ It's possible to get pretty good estimates of **small areas** (parliamentary con
 
 \centering
 
-![](images/us16_fig-lead-pid-wgt.pdf)
+![](../images/us16_fig-lead-pid-wgt.pdf)
 
 
 ## Trend analysis: the 2016 US presidential election
 
 \centering
-![](images/us16_NationalTimeTrend.pdf)
+![](../images/us16_NationalTimeTrend.pdf)
 
 
 ## Lesson 3
@@ -637,7 +637,7 @@ estimates %>%
 \columnsbegin
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/stein.jpg")
+knitr::include_graphics("../images/stein.jpg")
 ```
 
 \smallskip
@@ -1159,7 +1159,7 @@ The MRP estimates are now pretty good (RMSE = `r round(RMSE["mrp1"], 2)`)!
 \columnsbegin
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/bayes.png")
+knitr::include_graphics("../images/bayes.png")
 ```
 
 \smallskip
@@ -1188,7 +1188,7 @@ Bayesian inference seems particularly well suited for situations where there is 
 \columnsbegin
 \column{.3\textwidth}
 ```{r, out.width = "1.5in"}
-knitr::include_graphics("images/bayes-grave.jpg")
+knitr::include_graphics("../images/bayes-grave.jpg")
 ```
 
 \smallskip
@@ -1566,7 +1566,7 @@ For example, we can model state intercepts in a voting model using past vote. To
 
 ## Example: a simple two-level model
 
-![](images/dag_2level.png)
+![](../images/dag_2level.png)
 
                     
 ## Notation for hierarchical normal model
@@ -2142,7 +2142,7 @@ Gelman, Goel, Rivers and Rothschild, "The Mythical Swing Voter," *Quarterly Jour
 
 \centering
 
-![](images/further_reading.png)
+![](../images/further_reading.png)
 
 
 ## What we have covered
