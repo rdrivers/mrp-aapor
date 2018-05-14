@@ -950,6 +950,12 @@ par(mfrow=c(1,1))
 ```
 
 
+## Gender gaps in 2016 Exit poll
+
+\centering
+![](images/gender-gap-xp.pdf)
+
+
 ## Multilevel models with a single covariate
 
 **Varying intercepts, common slope** 
