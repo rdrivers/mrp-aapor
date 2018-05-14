@@ -2036,6 +2036,18 @@ estimates %>%
 ```
 
 
+## How well did we do?
+
+```{r echo=FALSE}
+load("data/output_538.RData")
+out538 <- out538 %>%
+	filter(!(state %in% c("ME1", "ME2", "NE1", "NE2", "NE3", "US"))) %>%
+	transmute(state = factor(as.character(state)), `538` = clinton_share) 
+estimates <- left_join(estimates, out538, by = "state")
+RMSE["538"] <- with(estimates, rmse(`538`, actual))
+barplot(sort(RMSE))
+```
+
 # 5. Advanced Topics
 
 ## Where to from here?
