@@ -2038,6 +2038,7 @@ estimates %>%
 
 ## How well did we do?
 
+\centering
 ```{r echo=FALSE}
 load("data/output_538.RData")
 out538 <- out538 %>%
@@ -2045,7 +2046,18 @@ out538 <- out538 %>%
 	transmute(state = factor(as.character(state)), `538` = clinton_share) 
 estimates <- left_join(estimates, out538, by = "state")
 RMSE["538"] <- with(estimates, rmse(`538`, actual))
-barplot(sort(RMSE))
+tmp <- RMSE
+names(tmp) <- c("Complete pooling", "No pooling", "Partial pooling",
+		"MRP: gender", "MRP: demos + 2012 vote", "MRP3", "538")
+tmp <- tmp[c(1:5, 7)]; tmp <- rev(sort(tmp))
+par(mar = c(3, 11, 4, 2))
+barplot(sort(tmp), horiz = TRUE, border = NA, las = 1,
+	xlim = c(0, 16), ylim = c(0, 6.6), xlab = "", ylab = "",
+	width = 1, space = 0.1,
+	main = "Root mean square error",
+	col = c("navy", "blue3", "purple3", "purple1", "red2", "red3"))
+text(x = tmp, y = seq(6, 0.6, length.out = 6), pos = 4,
+	labels = paste0(round(tmp, 1), "%"))
 ```
 
 # 5. Advanced Topics
