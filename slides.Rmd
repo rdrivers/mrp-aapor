@@ -1,7 +1,7 @@
 ---
 title: "Multilevel Regression and Post-stratification"
 author: "Douglas Rivers"
-date: "5/1/2018"
+date: "May 15, 2018"
 output:
   beamer_presentation:
     fig_caption: false
@@ -37,7 +37,7 @@ Slides, code, and datasets can be downloaded from Github:
 If you wish to run the examples shown in class, you will need to 
 
 1. Download R from one of the sites listed at <https://cran.r-project.org/mirrors.html> and install. R is an open source programming environment for statistical computing.
-2. (Optional) Download RStudio Desktop from [LINK]. RStudio is an integrated development environment for R. The free open source version is recommended.
+2. (Optional) Download RStudio Desktop from <https://www.rstudio.com//>. RStudio is an integrated development environment for R. The free open source version is recommended.
 3. Start R or RStudio and enter the following at the R command prompt:
 
 \footnotesize
@@ -135,7 +135,7 @@ knitr::include_graphics("images/stan_logo.png")
 ## What problems does MRP address?
 
 - **Selection bias.** Flexible and robust method for correcting for imbalances in sample composition, even when these are severe and can involve a large number of variables. 
-- **Small area estimation.** Can provide good estimates for sub-national units (such as states, Congressional Districts, counties, *etc.*)
+- **Small area estimation.** Can provide good estimates for sub-national units (such as states, Congressional districts, counties, *etc.*)
 - **Trend analysis.** Estimate means of survey variables over time with a set of rolling cross-sections
 
 
@@ -176,7 +176,7 @@ knitr::include_graphics("images/stan_logo.png")
 
 \LARGE
 
-Under some circumstances, **big data** (large sample sizes) and **modelling** can work with severe selection bias and empty cells.
+Under some circumstances, **big data** (large sample sizes) and **modelling** can handle empty cells and correct for severe selection bias.
 
   
 ## Small area estimation: the 2017 UK general election
@@ -253,7 +253,7 @@ Code `clean-data.R` for creating  `cleaned.RData` is on the course Github site.
 **Step 2: imputation** Impute the survey variable (proportion voting Democratic) for all combinations of age x gender x race x education x state.
 each cell of post-stratification (2 age x 2 gender x 3 race x 4 education x 51 state).
   
-**Step 3: post-stratification** Weight the imputed values by the population count in each of the $2 \times 2 \times 3 \times 4 \times 51 = 2248$ cells.
+**Step 3: post-stratification** Average the imputed values in each cell and weight the estimated cell mean by the population count in each of the $2 \times 2 \times 3 \times 4 \times 51 = 2248$ cells.
 
   
 ## Some important concepts we will cover
@@ -278,7 +278,7 @@ The **stratified estimator** is obtained by weighting the stratum estimates by t
 A stratified design can be more **efficient** than a simple random sample of the same size because
 
 * Eliminates variability in the proportion of sample coming from each stratum
-* Larger sample sizes allocated to more heterogeneous strata, less to homogeneous strata
+* Larger sample sizes could be allocated to more heterogeneous strata, less to homogeneous strata
 
 
 ## Notation for stratified sampling
@@ -322,7 +322,7 @@ $$
 There are three factors that determine the variance of the stratified estimator:
 
 * Size of the **sampling fractions** $f_h = n_h / N_h$ in each stratum. Usually these are close to zero and can be ignored.
-* The **within stratum variances** $sum_{i \in U_h} (y_i - \bar y_h)^2 / (N_h - 1)$. 
+* The **within stratum variances** $\sum_{i \in U_h} (y_i - \bar y_h)^2 / (N_h - 1)$. 
 * Variability of the **stratum weights** $w_h$.
 
 $S_h^2$ can be substantially less than the total variance of $y$, so there are potential large gains in efficiency from stratifying, compared to SRSWOR.
@@ -336,7 +336,7 @@ When the sample design is **not** stratified, it may still be feasible to use th
 
 The sample sizes in the post-strata are not fixed by design, so the variance formula only holds conditional upon the realized sample sizes $n_1,\dots,n_H$. (See Holt and Smith, "Post-stratification", *Journal of the Royal Statistical Society, Series A*, 1979.)
 
-Even though the sample may have started with equal selection probabilities, often the proportions in the post-strata differ substantially from the population proportions. Failure to post-stratify results in large bias, but large weights may result in unstable estimates. 
+Even though the sample may have started with equal selection probabilities, the proportions in the post-strata often differ substantially from the population proportions. Failure to post-stratify results in large bias, but large weights may result in unstable estimates. 
 
 Usual advice is to collapse post-strata to have at least 20 respondents per cell.
 
@@ -403,7 +403,7 @@ cps <- cps %>%
 
 ## Check that the datasets are consistent -- mistakes will be made!
 
-Time spent cleaning the data at this stage is well spent.
+Time spent cleaning the data at this stage is time well spent.
 
 \footnotesize
 ```{r, echo=TRUE, include=TRUE}
@@ -493,7 +493,7 @@ sparseCells(nr, nrweight = 4) # no more bad cells
 `NULL` means that, after collapsing, there are no empty cells or weights > 4.
 
 
-## Step 4: compute weight and add to dataframe
+## Step 4: compute weights and add to dataframe
 
 `weights(nr)` is a four dimensional (age x gender x race x education) array of **stratum weights**. I created `get_weights` to convert the stratum weights into a vector of **individual weights**.
 
@@ -1227,8 +1227,8 @@ family vault
 **Disadvantages**
 
 * Requires specification of prior probability distributions
-* Inferences are not "objective"
-* Better estimates of variance parameters
+* Inferences are not "objective" -- different results depending on what priors you use
+* More math
 * Takes *much* more computational effort
 
 \columnsend
@@ -1236,11 +1236,11 @@ family vault
 
 ## Basic ideas
 
-In Bayesian statistics, both data and parameters are considered to be random variables. The important distinction is between what is *observed* (the data, except possibly for missing values) and what isn't (parameters, such as regression coefficients). 
+In Bayesian statistics, both data and parameters are considered to be random variables. The important distinction is between what is **observed** (the data, except possibly for missing values) and what isn't (parameters, such as regression coefficients). 
 
-As in classical statistics, we specify a *model* (probability distribution) for the data, which depends on some unknown parameters. In addition, we summarize any information that we might have about the unknown parameters using a *prior probability distribution*.
+As in classical statistics, we specify a **model** (probability distribution) for the data, which depends on some unknown parameters. In addition, we summarize any information that we might have about the unknown parameters using a **prior probability distribution**.
 
-Bayesian inference uses Bayes theorem to combine the prior information with the data to obtain a *posterior probability distribution* for the parameters. 
+Bayesian inference uses Bayes theorem to combine the prior information with the data to obtain a **posterior probability distribution** for the parameters. 
 
 
 
@@ -1284,7 +1284,7 @@ $$
 **Posterior distribution** $\theta | y_1,y_2,y_3 \sim \text{Normal}(`r round(post.mean)`, `r round(post.sd)`)$
 
 
-## The posterior distribution
+## Bayesian updating: from prior to posterior
 
 \centering
 
@@ -1436,9 +1436,9 @@ model {
 To run a Stan program from R, you will need:
 
 * Load `rstan` package (using the `library` function)
-* Your Stan `model_code` (as a string or from an external file)
-* A named list `data` (containing all of the items listed in the Stan `data` block)
-* Call the `stan` function with `model_code` and `data` as arguments.
+* Code your Stan `model_code` (as a string or from an external file)
+* Create a named list `data` (containing all of the items listed in the Stan `data` block)
+* Call the `stan` function with `model_code` and `data` as arguments (and possibly other options)
 
 Stan returns draws from the posterior distribution of the parameters, arranged into a three-dimensional array (draws x chains x parameters).
 
@@ -2073,6 +2073,8 @@ text(x = tmp, y = seq(6, 0.6, length.out = 6), pos = 4,
 
 
 ## More complicated models
+
+Selection bias is **ignorable** if survey variables are conditionally independent of sample selection *conditional upon the covariates*. We would like to be able to fit models with many covariates and flexible functional forms.
 
 The models considered so far have been very simple. Instead, we might:
 
