@@ -311,7 +311,7 @@ Each respondent gets the weight associated with their stratum:
 $$
   \bar y_{\text{ST}} = \text{weighted average of sample values} = \dfrac{ w_{h_1} y_1 + \cdots + w_{h_n} y_n }{ w_{h_1} + \cdots + w_{h_n}}
 $$
-where $h_i$ and $w_{h_i}$ are the **stratum and **weight**, respectively, associated with respondent $i$.
+where $h_i$ and $w_{h_i}$ are the **stratum** and **weight**, respectively, associated with respondent $i$.
 
 
 ## Variance of the stratified estimator
