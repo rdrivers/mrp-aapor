@@ -1397,7 +1397,7 @@ model {
 **Data** (what you know)
 
 \scriptsize
-```
+```{r eval=FALSE, echo=TRUE}
 data {
   int n;  // number of data points
   real y[n]; // data on fares
