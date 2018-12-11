@@ -12,8 +12,7 @@ load("data/cleaned.RData")
 ## Recode pew data
 pew <- pew %>%
   filter(
-    complete.cases(age, raceeth, gender, educ, vote16),
-    vote16 != "nonvoter") %>%
+    complete.cases(age, raceeth, gender, educ, vote16)) %>%
   mutate(
     demvote = ifelse(vote16 == "clinton", 1, 0),
     age4 = factor(case_when(age < 30 ~ "18-29",
@@ -25,13 +24,16 @@ pew <- pew %>%
       "hs" = c("grades 1-8", "hs dropout", "hs grad"),
       "some col" = c("some col", "assoc")))
 
+# Save a full version for MNL
+pew_nv <- pew 
+pew <- pew %>% filter(vote16 != 'nonvoter')
+
 
 ## ...then do the same for CPS
 cps <- cps %>%
   filter(
     complete.cases(age_top_codes,
-      raceeth, gender, educ, turnout),
-    turnout == "yes") %>%
+      raceeth, gender, educ, turnout)) %>%
   mutate(
     age4 = factor(case_when(
       age_top_codes == "<80" & age < 30 ~ "18-29",
@@ -44,6 +46,9 @@ cps <- cps %>%
       "hs" = c("grades 1-8", "hs dropout", "hs grad"),
       "some col" = c("some col", "assoc")))
 
+# Save a full version for MNL
+cps_nv <- cps
+cps <- cps %>% filter(turnout == "yes")
 
 ## Check that the datasets are consistent -- mistakes will be made!
 compare_distributions <- function(var, data1, data2, wgt1, wgt2, digits = 1) {
@@ -700,4 +705,31 @@ estimates$mrp4 <- get_state_estimates(imputations)
 RMSE["mrp4"] <- with(estimates, rmse(mrp4, actual))
 RMSE
 
+######################
+# 6. MNL             #
+######################
+
+library(brms)
+
+# Includes Non-Voters
+pew_nv <- left_join(pew_nv, obama12, by = "state")
+cps_nv <- left_join(cps_nv, obama12, by = "state")
+
+fit <- brm(vote16 ~ 1 + age4 + gender + race3 + educ4 +
+           region + qlogis(obama12) + (1 | state), data = pew_nv,
+           family = categorical, chains = 4, cores = 4)
+imputations <- posterior_predict(fit, nsamples = 500, allow_new_levels = TRUE,
+               newdata = select(cps_nv, age4, gender, race3, educ4, region, obama12, state))
+
+state_table <- function(imp){
+  100 * prop.table(xtabs(weight ~ state + imp, data = cps_nv), 1)
+}
+
+tbls <- array(apply(imputations[1:10,], 1, state_table),
+              dim=c(51, 4, 10), 
+              dimnames=list(state=levels(cps_nv$state),
+                            vote16=levels(pew_nv$vote16),
+                            samples = 1:10))
+estimate <- apply(tbls, c('state', 'vote16'), mean)
+sd <- apply(tbls, c('state', 'vote16'), sd)
 
